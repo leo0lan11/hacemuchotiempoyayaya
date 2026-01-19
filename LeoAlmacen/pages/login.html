@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Almacén - Login</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="leoalmacen/leoalmacen/assets/css/style.css">
+
+  <!-- Fuente Bebas Neue -->
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .brand {
+      font-family: 'Bebas Neue', sans-serif;
+      color: #b30000;
+      font-size: 58px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 32px;
+      color: #b30000;
+      letter-spacing: -0.5px;
+      text-align: center;
+      margin-top: 15px;
+      margin-bottom: 25px;
+    }
+
+    .login-page {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .login-card {
+      background-color: #f9f9f9;
+      border-radius: 12px;
+      padding: 40px 30px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      width: 350px;
+      text-align: center;
+      position: relative;
+    }
+
+    .red-cross {
+      margin-bottom: 20px;
+    }
+
+    .cross-img {
+      width: 50px;
+      height: 50px;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .login-form input {
+      padding: 10px 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    .btn-red {
+      background-color: #b30000;
+      color: #fff;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .btn-red:hover {
+      background-color: #990000;
+    }
+
+    .small-note {
+      font-size: 14px;
+      margin-top: 15px;
+    }
+
+    .small-note a {
+      color: #b30000;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .small-note a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="login-page">
+    <section class="login-card">
+
+      <h1 class="brand">ALMACÉN</h1>
+
+      <div class="red-cross" aria-hidden="true">
+        <img src="leoalmacen/leoalmacen/assets/img/emblema.png" alt="cruz" class="cross-img">
+      </div>
+
+      <h2 class="section-title">INICIO DE SESIÓN</h2>
+
+      <!-- FORMULARIO -->
+      <form class="login-form" method="POST" action="leoalmacen/leoalmacen/backend/login/login.php">
+        <label for="usuario">Usuario</label>
+        <input type="text" id="usuario" name="usuario" placeholder="Usuario" required>
+
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" placeholder="Contraseña" required>
+
+        <button type="submit" class="btn-red">INICIA SESIÓN</button>
+      </form>
+
+      <p class="small-note">
+        ¿NO TIENES UNA CUENTA? <a href="#">REGÍSTRATE</a>
+      </p>
+    </section>
+  </main>
+
+  <!-- JS -->
+  <script src="leoalmacen/leoalmacen/assets/js/app.js"></script>
+</body>
+</html>

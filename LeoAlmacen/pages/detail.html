@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Almacén - Detalle</title>
+
+<style>
+:root{
+  --red:#b00000;
+  --red-dark:#8e0000;
+  --bg:#f4f6f9;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --line:#e5e7eb;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Inter, system-ui, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+/* ===== HEADER (SIN CAMBIOS) ===== */
+header{
+  background:linear-gradient(90deg,var(--red),var(--red-dark));
+  padding:14px 32px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  box-shadow:0 6px 18px rgba(0,0,0,.25);
+}
+
+.logo{display:flex;align-items:center;gap:12px;min-width:260px}
+.logo img{height:46px}
+
+.search{
+  flex:1;
+  max-width:540px;
+  background:#fff;
+  border-radius:12px;
+  padding:10px 16px;
+  display:flex;
+}
+
+.search input{border:none;outline:none;width:100%}
+
+.stats{display:flex;gap:12px}
+.stat{
+  background:#fff;
+  padding:8px 14px;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.avatar{height:44px;border-radius:50%}
+
+/* ===== MAIN ===== */
+main{
+  display:flex;
+  justify-content:center;
+  padding:50px 20px;
+}
+
+/* ===== CARD ===== */
+.detail-card{
+  background:#fff;
+  width:100%;
+  max-width:780px;
+  padding:36px;
+  border-radius:18px;
+  border-top:6px solid var(--red);
+  box-shadow:0 16px 40px rgba(176,0,0,.28);
+  display:flex;
+  gap:36px;
+}
+
+/* LEFT */
+.left{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+
+.image-box{
+  background:#f8f9fb;
+  padding:22px;
+  border-radius:14px;
+  display:flex;
+  justify-content:center;
+  border:1px solid var(--line);
+}
+
+.image-box img{
+  width:100%;
+  max-height:300px;
+  object-fit:contain;
+}
+
+.tech{
+  background:#fff;
+  border-radius:14px;
+  border:1px solid var(--line);
+  padding:16px;
+}
+
+.tech h4{
+  margin:0 0 12px;
+  font-size:13px;
+  font-weight:900;
+  color:var(--red-dark);
+  text-transform:uppercase;
+}
+
+.tech-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  font-size:13px;
+}
+
+.tech-item{
+  background:#f9fafb;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:10px;
+}
+
+.tech-item span{
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+}
+
+/* RIGHT */
+.info{flex:1.2}
+
+.status{
+  display:inline-block;
+  padding:6px 14px;
+  border-radius:20px;
+  background:#e8f5e9;
+  color:#2e7d32;
+  font-size:12px;
+  font-weight:900;
+  margin-bottom:12px;
+}
+
+h2{margin:6px 0 4px;font-size:26px}
+
+.subtitle{
+  color:var(--muted);
+  font-size:14px;
+  margin-bottom:22px;
+}
+
+.section{
+  padding:16px 0;
+  border-top:1px solid #f1caca;
+}
+
+.section-title{
+  font-size:13px;
+  font-weight:900;
+  color:var(--red-dark);
+  margin-bottom:10px;
+  text-transform:uppercase;
+}
+
+.stock{
+  font-size:18px;
+  font-weight:700;
+}
+
+.stock span{
+  color:var(--red);
+  font-size:22px;
+}
+
+.btn-main{
+  width:100%;
+  padding:15px;
+  background:var(--red);
+  color:#fff;
+  border:none;
+  border-radius:10px;
+  font-weight:900;
+  cursor:pointer;
+  margin-top:16px;
+}
+
+.actions{
+  display:flex;
+  gap:12px;
+  margin-top:18px;
+}
+
+.btn-soft{
+  flex:1;
+  padding:13px;
+  border-radius:10px;
+  border:1px solid var(--red);
+  background:#fff;
+  color:var(--red);
+  font-weight:900;
+  cursor:pointer;
+}
+
+textarea{
+  width:100%;
+  margin-top:14px;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid var(--line);
+  resize:none;
+}
+
+/* ===== MODAL ===== */
+.modal-bg{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  display:none;
+  align-items:center;
+  justify-content:center;
+}
+
+.modal{
+  background:#fff;
+  width:100%;
+  max-width:520px;
+  padding:24px;
+  border-radius:16px;
+  border-top:6px solid var(--red);
+}
+
+.modal h3{margin:0 0 16px}
+
+.modal ul{
+  padding-left:18px;
+  font-size:14px;
+}
+
+.modal li{margin-bottom:8px}
+
+.close{
+  background:none;
+  border:none;
+  font-size:22px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">
+    <img src="leoalmacen/assets/img/curznoroja.png">
+    <div>
+      <strong style="color:#fff;font-size:14px;">ALMACÉN GENERAL</strong>
+      <div style="color:#f1f1f1;font-size:11px;">Cruz Roja Mexicana</div>
+    </div>
+  </div>
+
+  <div class="search">
+    <input placeholder="Buscar equipo, código o categoría">
+  </div>
+
+  <div class="stats">
+    <div class="stat" style="color:#2e7d32;">● 18 Operativos</div>
+    <div class="stat" style="color:#f9a825;">● 6 Revisión</div>
+    <div class="stat" style="color:#c62828;">● 4 Fuera de servicio</div>
+  </div>
+
+  <img src="leoalmacen/assets/img/perfil.png" class="avatar">
+</header>
+
+<main>
+
+<div class="detail-card">
+
+  <div class="left">
+    <div class="image-box">
+      <img src="leoalmacen/assets/img/extintor.png">
+    </div>
+
+    <div class="tech">
+      <h4>Ficha técnica</h4>
+      <div class="tech-grid">
+        <div class="tech-item"><span>Capacidad</span>10 lb</div>
+        <div class="tech-item"><span>Agente</span>CO₂</div>
+        <div class="tech-item"><span>Clase</span>B – C</div>
+        <div class="tech-item"><span>Presión</span>Alta</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="info">
+    <div class="status">OPERATIVO</div>
+    <h2>Extintor de Dióxido de Carbono · 10 lb</h2>
+    <div class="subtitle">Código EXT-CO2-10LB · Almacén Central</div>
+
+    <div class="section">
+      <div class="section-title">Disponibilidad</div>
+      <div class="stock">Stock disponible: <span>10</span></div>
+    </div>
+
+    <button class="btn-main">Reservar producto</button>
+
+    <div class="actions">
+      <button class="btn-soft" onclick="abrirHistorial()">Historial</button>
+      <button class="btn-soft" onclick="agregarComentario()">Añadir comentario</button>
+    </div>
+
+    <textarea id="comentario" placeholder="Escribe un comentario internoleoalmacen."></textarea>
+  </div>
+
+</div>
+
+</main>
+
+<!-- MODAL -->
+<div id="modal" class="modal-bg">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;">
+      <h3>Historial del producto</h3>
+      <button class="close" onclick="cerrarHistorial()">✕</button>
+    </div>
+    <ul id="historial">
+      <li><strong>10/02/2025</strong> – Ingreso al almacén</li>
+      <li><strong>15/06/2025</strong> – Salida para mantenimiento</li>
+      <li><strong>01/09/2025</strong> – Reingreso</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+function abrirHistorial(){
+  document.getElementById('modal').style.display='flex';
+}
+
+function cerrarHistorial(){
+  document.getElementById('modal').style.display='none';
+}
+
+function agregarComentario(){
+  const txt = document.getElementById('comentario');
+  if(!txt.value.trim()) return;
+
+  const li = document.createElement('li');
+  li.innerHTML = `<strong>${new Date().toLocaleDateString('es-MX')}</strong> – ${txt.value}`;
+  document.getElementById('historial').appendChild(li);
+
+  txt.value = '';
+}
+</script>
+
+</body>
+</html>
