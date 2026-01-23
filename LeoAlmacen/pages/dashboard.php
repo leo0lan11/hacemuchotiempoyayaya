@@ -3,17 +3,19 @@
 session_start();
 
 if (!isset($_SESSION['usuario'])) {
-    header("Location: /LeoAlmacen/index.html");
+    header("Location: /LeoAlmacen/pages/login.html");
     exit();
 }
 $nombre = $_SESSION['usuario'];
+$rol = isset($_SESSION['rol']) ? $_SESSION['rol'] : 'usuario';
+$esAdmin = ($rol === 'admin');
 ?>
 <!doctype html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Almacén - Dashboard</title>
+  <title>Almacén</title>
   
   <link rel="stylesheet" href="/LeoAlmacen/assets/css/dashboard.css">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
@@ -41,8 +43,8 @@ $nombre = $_SESSION['usuario'];
           <span style="display:block; font-size:12px; color:#999;">Bienvenido,</span>
           <strong style="color:#333;"><?php echo htmlspecialchars($nombre); ?></strong>
       </div>
-      
-      <a href="/LeoAlmacen/index.html" class="btn-logout" title="Cerrar Sesión">
+
+      <a href="/LeoAlmacen/pages/login.html" class="btn-logout" title="Cerrar Sesión">
         <i class="ri-logout-box-r-line"></i>
       </a>
   </div>
@@ -82,9 +84,11 @@ $nombre = $_SESSION['usuario'];
         </section>
 </main>
 
+<?php if ($esAdmin): ?>
 <button class="fab">
     <i class="ri-add-line"></i>
 </button>
+<?php endif; ?>
 
 <div id="modalAgregar" class="modal-overlay" style="display:none;">
   <div class="modal-content">

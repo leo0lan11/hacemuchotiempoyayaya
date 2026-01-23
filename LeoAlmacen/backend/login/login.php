@@ -31,18 +31,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
 
         } else {
-            echo "<script>alert('Contraseña incorrecta'); window.location.href='/leoalmacen/index.html';</script>";
+            echo "<script>alert('Contraseña incorrecta'); window.location.href='/leoalmacen/pages/login.html';</script>";
         }
         // ------------------------------
 
     } else {
-        echo "<script>alert('El usuario no existe'); window.location.href='/leoalmacen/index.html';</script>";
+        echo "<script>alert('El usuario no existe'); window.location.href='/leoalmacen/pages/login.html';</script>";
     }
     
     $stmt->close();
     $conexion->close();
 
 } else {
-    header("Location: /leoalmacen/index.html");
+    header("Location: /leoalmacen/pages/login.html");
 }
 ?>

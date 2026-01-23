@@ -71,26 +71,41 @@ document.addEventListener("DOMContentLoaded", () => {
             if (p.estado === "Revisión" || p.estado === "En revisión") color = "#f9a825";
             if (p.estado === "Fuera de servicio") color = "#c62828";
 
-            const img = obtenerImagen(p.categoria);
+const img = (p.imagen && p.imagen !== "")
+    ? p.imagen
+    : obtenerImagen(p.categoria);
 
-            grid.innerHTML += `
-                <div class="card" data-status="${p.estado}">
-                    <div class="badge" style="color:${color}">
-                        <i class="ri-checkbox-blank-circle-fill" style="font-size:8px; vertical-align:middle;"></i> ${p.estado}
-                    </div>
-            
-                    <div class="img">
-                        <img src="/LeoAlmacen/assets/img/${img}" alt="${p.nombre}" onerror="this.src='/LeoAlmacen/assets/img/mockup.png'">
-                    </div>
-            
-                    <div class="info">
-                        <div class="title" title="${p.nombre}">${p.nombre}</div>
-                        <div class="stock">
-                           <i class="ri-stack-line"></i> Stock: <strong>${p.stock}</strong>
-                        </div>
-                    </div>
-                </div>
-            `;
+console.log(p);
+
+const card = document.createElement('div');
+card.className = 'card';
+card.setAttribute('data-status', p.estado);
+card.style.cursor = 'pointer';
+card.setAttribute('data-id', p.id_producto);
+
+card.innerHTML = `
+    <div class="badge" style="color:${color}">
+        <i class="ri-checkbox-blank-circle-fill" style="font-size:8px; vertical-align:middle;"></i> ${p.estado}
+    </div>
+
+    <div class="img">
+        <img src="/LeoAlmacen/assets/img/${img}" alt="${p.nombre}" onerror="this.src='/LeoAlmacen/assets/img/error.png'">
+    </div>
+
+    <div class="info">
+        <div class="title" title="${p.nombre}">${p.nombre}</div>
+        <div class="stock">
+           <i class="ri-stack-line"></i> Stock: <strong>${p.stock}</strong>
+        </div>
+    </div>
+`;
+
+card.addEventListener('click', () => {
+    window.location.href = '/LeoAlmacen/pages/detail.php?id=' + p.id_producto;
+});
+
+grid.appendChild(card);
+
         });
     }
 

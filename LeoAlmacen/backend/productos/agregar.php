@@ -1,11 +1,18 @@
 <?php
 // backend/productos/agregar.php
+session_start();
 header('Content-Type: application/json');
 require_once __DIR__ . '/../conexion/conexion.php';
 
 // Verificar que sea POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['success' => false, 'error' => 'Método no permitido']);
+    exit;
+}
+
+// Verificar que el usuario sea admin
+if (!isset($_SESSION['usuario']) || !isset($_SESSION['rol']) || $_SESSION['rol'] !== 'admin') {
+    echo json_encode(['success' => false, 'error' => 'No tienes permiso para agregar productos']);
     exit;
 }
 
