@@ -2,14 +2,8 @@
 session_start();
 require_once "../backend/conexion/conexion.php";
 
-/* =========================
-   CONFIGURACIÓN
-========================= */
-$rutaImagenes = "/LeoAlmacen/assets/img/"; // carpeta donde están las imágenes
+$rutaImagenes = "/LeoAlmacen/assets/img/";
 
-/* =========================
-   CARRITO (solo IDs)
-========================= */
 $ids = $_SESSION['carrito_prestamo'] ?? [];
 $productos = [];
 
@@ -29,12 +23,9 @@ if (!empty($ids)) {
     $productos = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 }
 
-/* =========================
-   MAPEO DE ESTADOS
-========================= */
 $estados = [
-    1 => ['texto' => 'Operativo',        'clase' => 'Operativo'],
-    2 => ['texto' => 'En revisión',       'clase' => 'Revision'],
+    1 => ['texto' => 'Operativo', 'clase' => 'Operativo'],
+    2 => ['texto' => 'En revisión', 'clase' => 'Revision'],
     3 => ['texto' => 'Fuera de servicio', 'clase' => 'Fuera']
 ];
 ?>
@@ -44,105 +35,148 @@ $estados = [
 <meta charset="utf-8">
 <title>Carrito | Almacén General</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/LeoAlmacen/assets/css/dashboard.css">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
 
 <style>
 :root{
   --red:#b00000;
   --green:#2e7d32;
-  --orange:#f9a825;
-  --gray:#616161;
-  --bg:#f6f7f9;
+  --yellow:#f9a825;
+  --bg:#f5f7fa;
   --card:#ffffff;
   --text:#1f1f1f;
-  --muted:#6b6b6b;
-  --border:#e3e3e3;
+  --muted:#666;
+  --shadow:0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06);
+  --radius:12px;
 }
-*{box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
-body{margin:0;background:var(--bg);color:var(--text)}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);padding-bottom:30px}
 
 header{
-  background:#fff;
-  border-bottom:1px solid var(--border);
-  padding:14px 24px;
+  background:var(--card);
+  box-shadow:var(--shadow);
+  padding:15px 40px;
   display:flex;
   align-items:center;
   justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:100;
 }
-header h1{margin:0;font-size:20px;color:var(--red)}
+
+.logo{display:flex;align-items:center;gap:12px}
+.logo strong{color:var(--red);font-size:18px;letter-spacing:.5px}
+.title-page{font-size:12px;color:#666}
+
+.header-actions{display:flex;align-items:center;gap:16px}
+.cart-counter{background:#fef2f2;color:var(--red);border-radius:20px;padding:6px 12px;font-size:13px;font-weight:600}
+.back{
+  text-decoration:none;
+  color:#444;
+  font-weight:500;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.back:hover{color:var(--red)}
 
 .container{max-width:1200px;margin:30px auto;padding:0 20px}
-h2{margin-bottom:16px}
+h2{margin-bottom:8px}
+.subtitle{color:var(--muted);margin-bottom:24px}
+
+.summary{
+  margin-bottom:20px;
+  background:#fff;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
-  gap:20px;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:24px;
 }
 
 .card{
   background:var(--card);
-  border-radius:16px;
-  box-shadow:0 8px 20px rgba(0,0,0,.06);
-  padding:16px;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  border:1px solid transparent;
   display:flex;
   flex-direction:column;
   position:relative;
+  overflow:hidden;
+  transition:all .25s ease;
 }
+.card:hover{transform:translateY(-4px);border-color:#ececec}
 
 .badge{
   position:absolute;
-  top:14px;
-  right:14px;
+  top:12px;
+  right:12px;
   padding:4px 10px;
-  border-radius:12px;
-  font-size:12px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:700;
   color:#fff;
 }
 .badge.Operativo{background:var(--green)}
 .badge.Revision{background:var(--yellow)}
 .badge.Fuera{background:var(--red)}
 
-.card img{
-  width:100%;
-  height:160px;
-  object-fit:contain;
-  background:#fafafa;
-  border-radius:12px;
+.img-wrap{
+  height:190px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  background:#fff;
 }
+.card img{width:100%;height:100%;object-fit:contain}
 
-.card h3{margin:12px 0 6px;font-size:16px}
+.info{padding:14px 16px 16px}
+.card h3{margin:0 0 6px;font-size:16px}
 .card p{margin:4px 0;color:var(--muted);font-size:14px}
 
 .actions{
-  margin-top:auto;
+  margin-top:12px;
   display:flex;
-  justify-content:flex-end;
+  justify-content:space-between;
+  align-items:center;
+  padding-top:10px;
+  border-top:1px solid #f1f1f1;
 }
+.label-id{font-size:12px;color:#9b9b9b}
 
 .remove{
-  background:var(--red);
-  color:#fff;
-  border:none;
-  padding:8px 14px;
-  border-radius:10px;
+  background:#fff;
+  color:var(--red);
+  border:1px solid #f3b6b6;
+  padding:8px 12px;
+  border-radius:8px;
   cursor:pointer;
+  font-weight:600;
 }
+.remove:hover{background:#fff1f1}
 
-.footer{
-  margin-top:30px;
-  display:flex;
-  justify-content:flex-end;
-}
-
+.footer{margin-top:30px;display:flex;justify-content:flex-end}
 .confirm{
   background:var(--red);
   color:#fff;
   border:none;
-  padding:14px 22px;
-  border-radius:14px;
+  padding:14px 24px;
+  border-radius:10px;
   font-size:16px;
   cursor:pointer;
+  font-weight:600;
 }
+.confirm:hover{background:#940000}
 
 .empty{
   background:#fff;
@@ -150,19 +184,38 @@ h2{margin-bottom:16px}
   border-radius:16px;
   text-align:center;
   color:#777;
+  box-shadow:var(--shadow);
+}
+
+@media (max-width:768px){
+  header{padding:14px 16px}
+  .logo img{height:38px}
+  .header-actions{gap:10px}
+  .cart-counter{display:none}
+  .summary{flex-direction:column;align-items:flex-start;gap:6px}
 }
 </style>
 </head>
 
 <body>
-
 <header>
-  <h1>🛒 Carrito de Solicitud</h1>
-  <a href="dashboard.php" style="text-decoration:none;color:#555">← Volver</a>
+  <div class="logo">
+    <img src="/LeoAlmacen/assets/img/emblema.png" alt="Logo Cruz Roja" style="height:45px;">
+    <div>
+      <strong>ALMACÉN GENERAL</strong>
+      <div class="title-page">Carrito de préstamo</div>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <div class="cart-counter"><i class="ri-shopping-cart-line"></i> <?= count($productos) ?> equipo(s)</div>
+    <a href="dashboard.php" class="back"><i class="ri-arrow-left-line"></i> Volver</a>
+  </div>
 </header>
 
 <div class="container">
   <h2>Equipos seleccionados</h2>
+  <p class="subtitle">Revisa tus artículos antes de confirmar la solicitud.</p>
 
 <?php if (empty($productos)): ?>
   <div class="empty">
@@ -171,8 +224,13 @@ h2{margin-bottom:16px}
   </div>
 <?php else: ?>
 
+  <div class="summary">
+    <div><strong>Total en carrito:</strong> <?= count($productos) ?> equipo(s)</div>
+    <small style="color:#666;">Puedes quitar elementos o confirmar tu solicitud.</small>
+  </div>
+
   <div class="grid">
-    <?php foreach ($productos as $item): 
+    <?php foreach ($productos as $item):
         $estado = $estados[$item['id_estado']] ?? [
             'texto' => 'Desconocido',
             'clase' => 'Fuera'
@@ -183,22 +241,23 @@ h2{margin-bottom:16px}
             : $rutaImagenes . "no-image.png";
     ?>
       <div class="card">
-        <span class="badge <?= $estado['clase'] ?>">
-          <?= $estado['texto'] ?>
-        </span>
+        <span class="badge <?= $estado['clase'] ?>"><?= $estado['texto'] ?></span>
 
-       <img src="<?= $imagen ?>"
-     onerror="this.onerror=null; this.src='/LeoAlmacen/assets/img/error.png';">
+        <div class="img-wrap">
+          <img src="<?= $imagen ?>" onerror="this.onerror=null; this.src='/LeoAlmacen/assets/img/error.png';">
+        </div>
 
+        <div class="info">
+          <h3><?= htmlspecialchars($item['nombre']) ?></h3>
+          <p>Stock disponible: <?= (int)$item['stock'] ?></p>
 
-        <h3><?= htmlspecialchars($item['nombre']) ?></h3>
-        <p>Stock disponible: <?= (int)$item['stock'] ?></p>
-
-        <div class="actions">
-          <form action="quitarcarrito.php" method="POST">
-            <input type="hidden" name="id" value="<?= (int)$item['id_producto'] ?>">
-            <button class="remove">Quitar</button>
-          </form>
+          <div class="actions">
+            <span class="label-id">#<?= (int)$item['id_producto'] ?></span>
+            <form action="quitarcarrito.php" method="POST">
+              <input type="hidden" name="id" value="<?= (int)$item['id_producto'] ?>">
+              <button class="remove" type="submit"><i class="ri-delete-bin-line"></i> Quitar</button>
+            </form>
+          </div>
         </div>
       </div>
     <?php endforeach; ?>
@@ -206,7 +265,7 @@ h2{margin-bottom:16px}
 
   <div class="footer">
     <form action="guardar_solicitud.php" method="POST">
-      <button class="confirm">Confirmar solicitud</button>
+      <button class="confirm" type="submit">Confirmar solicitud</button>
     </form>
   </div>
 
