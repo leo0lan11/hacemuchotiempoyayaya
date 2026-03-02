@@ -37,20 +37,41 @@ $esAdmin = ($rol === 'admin');
   </div>
 
   <div class="search">
-    <i class="ri-search-line"></i> <input id="buscador" placeholder="Buscar equipo, categoría o código...">
+    <i class="ri-search-line"></i>
+    <input id="buscador" placeholder="Buscar equipo, categoría o código...">
   </div>
+
+  <!-- 🛒 CARRITO -->
+  <a href="carrito.php"
+     style="
+       margin-right:15px;
+       color:#b00000;
+       font-family: Arial, Helvetica, sans-serif;
+       font-weight:600;
+       text-decoration: underline;
+       display:flex;
+       align-items:center;
+       gap:4px;
+     ">
+    <i class="ri-shopping-cart-line"></i>
+    Préstamo
+    <?php if (!empty($_SESSION['carrito_prestamo'])): ?>
+      (<?= count($_SESSION['carrito_prestamo']) ?>)
+    <?php endif; ?>
+  </a>
 
   <div class="user-profile">
-      <div style="text-align:right; line-height:1.2;">
-          <span style="display:block; font-size:12px; color:#999;">Bienvenido,</span>
-          <strong style="color:#333;"><?php echo htmlspecialchars($nombre); ?></strong>
-      </div>
+    <div style="text-align:right; line-height:1.2;">
+      <span style="display:block; font-size:12px; color:#999;">Bienvenido,</span>
+      <strong style="color:#333;"><?php echo htmlspecialchars($nombre); ?></strong>
+    </div>
 
-      <a href="/LeoAlmacen/pages/login.html" class="btn-logout" title="Cerrar Sesión">
-        <i class="ri-logout-box-r-line"></i>
-      </a>
+    <a href="/LeoAlmacen/pages/login.html" class="btn-logout" title="Cerrar Sesión">
+      <i class="ri-logout-box-r-line"></i>
+    </a>
   </div>
 </header>
+
 
 <main>
     <section class="kpis">

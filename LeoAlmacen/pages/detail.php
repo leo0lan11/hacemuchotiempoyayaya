@@ -137,6 +137,23 @@ $stmt->close();
     <i class="ri-search-line"></i>
     <input type="text" placeholder="Buscar equipo, categoría o código..." disabled>
   </div>
+<a href="carrito.php"
+   style="
+     margin-right:15px;
+     color:#b00000;
+     font-family: Arial, Helvetica, sans-serif;
+     font-weight:600;
+     text-decoration: underline;
+     display:flex;
+     align-items:center;
+     gap:4px;
+   ">
+  <i class="ri-shopping-cart-line"></i>
+  Préstamo
+  <?php if (!empty($_SESSION['carrito_prestamo'])): ?>
+    (<?= count($_SESSION['carrito_prestamo']) ?>)
+  <?php endif; ?>
+</a>
 
   <div class="user-profile">
       <div style="text-align:right; line-height:1.2;">
@@ -203,11 +220,16 @@ $stmt->close();
       <?= htmlspecialchars($producto['descripcion']) ?>
     </p>
 
-    <div class="actions">
-      <a href="dashboard.php" class="btn">
-        <i class="ri-arrow-left-line"></i> Volver
-      </a>
-    </div>
+   <div class="actions">
+  <a href="dashboard.php" class="btn">
+    <i class="ri-arrow-left-line"></i> Volver
+  </a>
+
+  <a href="prestamo.php?id=<?= $id ?>" class="btn" style="margin-left:10px;">
+    <i class="ri-shopping-cart-line"></i> Agregar al préstamo
+  </a>
+</div>
+
 
     <!-- COMENTARIOS -->
     <div style="margin-top: 30px; padding-top: 20px; border-top: 2px solid #e0e0e0;">
